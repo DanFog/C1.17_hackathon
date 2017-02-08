@@ -4,15 +4,49 @@
     <meta charset="UTF-8">
     <title>Weather based Music</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
+
+    <!-- Navigation -->
     <div class="navbar navbar-inverse navbar-fixed-top" id="header">
         <div id="logo">
             <img src="#"/>
         </div>
     </div>
+
+    <!-- Container -->
+    <div class='container-fluid'>
+
+      <!-- Weahter div -->
+      <div id='weather'>
+        <div class='weather_img'>
+          <img src="#"/>
+        </div>
+        <div class='weather_info'>
+
+        </div>
+      </div>
+
+      <!-- Spotify div -->
+      <div id=spotify>
+
+      </div>
+      <br>
+      <br>
+      <div id="zip_code form-group">
+        <div class='form-group input-group'>
+          <span class="input-group-addon">
+            <span class='glyphicon glyphicon-map-marker'></span>
+          </span>
+          <input class='form-control' type="text" name="zipcode" placeholder="Zip Code">
+        </div>
+      </div>
+      <button type='button' class='btn btn-success'>Submit</button>
+    </div>
+
 </body>
 </html>
