@@ -11,10 +11,10 @@
 </head>
 <body>
 
-    <!-- Navigation -->
-    <div class="navbar navbar-inverse navbar-fixed-top" id="header">
+    <!-- Navbar -->
+    <div class="navbar navbar-inverse" id="header">
         <div id="logo">
-            <img src="#"/>
+            <img src="assets/spotify-1.png" alt='app logo'/>
         </div>
     </div>
 
@@ -22,18 +22,23 @@
     <div class='container-fluid'>
 
       <!-- Weahter div -->
-      <div id='weather'>
-        <div class='weather_img'>
-          <img src="#"/>
+      <div id='weather' class='col-xs-offset-2 col-xs-8'>
+        <div class='weather_img col-xs-offset-2 col-xs-2'>
+          <img src="assets/01d.png"/>
+          <p class='weather_description'>sunny</p>
         </div>
-        <div class='weather_info'>
-
+        <div class='Temperature col-xs-offset-2 col-xs-2'>
+          <h2>80F</h2>
+        </div>
+        <div class='weather_details col-xs-offset-2 col-xs-2'>
+          <p class='wind'> 3mph</p>
+          <p class='humidity'>60%</p>
         </div>
       </div>
 
       <!-- Spotify div -->
-      <div id=spotify>
-
+      <div id='spotify' class='col-xs-offset-4'>
+        <iframe src="https://embed.spotify.com/?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
       </div>
       <br>
       <br>
@@ -46,6 +51,11 @@
         </div>
         <button type='button' class='btn btn-success'>Submit</button>
       </div>
+
+    </div>
+
+    <!-- footer -->
+    <div id="footer">
 
     </div>
 
