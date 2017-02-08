@@ -15,6 +15,7 @@ $(document).ready(initialize);
 * function to add click handers, called on document ready
 */
 function initialize() {
+  $('#zip_code_submit').click(store_zip);
   get_geo_location();
 }
 
@@ -31,17 +32,29 @@ function connect_spotify() {
 * stores weather in a global variable, weather
 * @param: location - the location of the user, either a user entered zipcode, or an object holding latitude and longitude
 */
-function connect_open_weather(location) {
-  console.log(location);
-  $.ajax({
-    dataType: 'json',
-    data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'lat': user_location.latitude, 'lon': user_location.longitude},
-    url: 'http://api.openweathermap.org/data/2.5/weather',
-    method: 'get',
-    success: function(response) {
-      console.log(response);
-    }
-  })
+function connect_open_weather() {
+  if(typeof user_location == 'object') {
+    $.ajax({
+      dataType: 'json',
+      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'lat': user_location.latitude, 'lon': user_location.longitude},
+      url: 'http://api.openweathermap.org/data/2.5/weather',
+      method: 'get',
+      success: function(response) {
+        console.log(response);
+
+      }
+    });
+  } else if(typeof user_location == 'string' && user_location.length === 5) {
+    $.ajax({
+      dataType: 'json',
+      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'zip': user_location+',us'},
+      url: 'http://api.openweathermap.org/data/2.5/weather',
+      method: 'get',
+      success: function(response) {
+        console.log(response);
+      }
+    });
+  }
 }
 
 /** function: connect_flickr
@@ -65,7 +78,22 @@ function get_geo_location() {
   }
 }
 
+/** function: store_geo_location
+* stores the latitude and longitude in user_location
+* calls connect_open_weather which will get the weather at the latitude and longitude of the location
+*/
+
 function store_geo_location(lat, long) {
   user_location = {'latitude': lat, 'longitude': long};
+  connect_open_weather();
+}
+
+/** function: store_zip
+*
+*/
+function store_zip() {
+  console.log('clicked');
+  user_location = $('#zip_code_input').val();
+  console.log(user_location);
   connect_open_weather();
 }
