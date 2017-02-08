@@ -6,6 +6,10 @@ body {
   background-size: cover;
 }
 
+#logo img{
+  height: 10vh;
+}
+
 .navbar {
   background-color: transparent;
   border-bottom: 2px solid white;
