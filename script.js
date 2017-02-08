@@ -32,7 +32,16 @@ function connect_spotify() {
 * @param: location - the location of the user, either a user entered zipcode, or an object holding latitude and longitude
 */
 function connect_open_weather(location) {
-
+  console.log(location);
+  $.ajax({
+    dataType: 'json',
+    data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'lat': user_location.latitude, 'lon': user_location.longitude},
+    url: 'http://api.openweathermap.org/data/2.5/weather',
+    method: 'get',
+    success: function(response) {
+      console.log(response);
+    }
+  })
 }
 
 /** function: connect_flickr
@@ -58,4 +67,5 @@ function get_geo_location() {
 
 function store_geo_location(lat, long) {
   user_location = {'latitude': lat, 'longitude': long};
+  connect_open_weather();
 }
