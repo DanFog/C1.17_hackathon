@@ -1,4 +1,4 @@
-/**
+  /**
  * Created by ck111 on 2/8/2017.
  */
 
@@ -41,7 +41,7 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         console.log(response);
-
+        connect_flickr();
       }
     });
   } else if(typeof user_location == 'string' && user_location.length === 5) {
@@ -52,6 +52,7 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         console.log(response);
+        connect_flickr();
       }
     });
   }
@@ -62,7 +63,18 @@ function connect_open_weather() {
 * @param: weather - used to pull weather specific images im so background of the page relates to the music that is playing
 */
 function connect_flickr(weather) {
-
+  $.ajax({
+    dataType: 'json',
+    url: 'https://api.flickr.com/services/rest',
+    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather},
+    method: 'get',
+    success: function(response) {
+      console.log(response)
+    },
+    error: function(response){
+      console.log(response)
+    }
+  });
 }
 
 /** function: get_geo_location
