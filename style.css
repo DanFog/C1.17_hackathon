@@ -1,0 +1,12 @@
+body {
+  background-image: url("assets/qXhoCzr.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.navbar {
+  background-color: transparent;
+  border-bottom: 2px solid white;
+}
