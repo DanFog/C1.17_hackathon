@@ -6,7 +6,7 @@
 * weather: current weather at your location, default is sunny if no weather data is found
 */
 
-var location;
+var user_location;
 var weather = 'Sunny';
 
 $(document).ready(initialize);
@@ -15,7 +15,7 @@ $(document).ready(initialize);
 * function to add click handers, called on document ready
 */
 function initialize() {
-
+  get_geo_location();
 }
 
 /** function: connect_spotify
@@ -47,5 +47,15 @@ function connect_flickr(weather) {
 * uses html5 to get the geolocation of the user and stores latitude and longitude in an object
 */
 function get_geo_location() {
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(position) {
+    store_geo_location(position.coords.latitude, position.coords.longitude);
+  });
+  } else {
+    console.log("not supported on this browser");
+  }
+}
 
+function store_geo_location(lat, long) {
+  user_location = {'latitude': lat, 'longitude': long};
 }
