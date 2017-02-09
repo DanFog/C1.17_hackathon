@@ -22,6 +22,7 @@ function initialize() {
       store_zip();
     }
   });
+  get_song_id();
 }
 
 /** function: connect_spotify
@@ -73,7 +74,6 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         weather = response.weather[0].main;
-        connect_flickr();
         connect_spotify();
         console.log(response);
         weather_data = response;
@@ -88,7 +88,6 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         weather=response.weather[0].main;
-        connect_flickr();
         console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
@@ -101,7 +100,6 @@ function connect_open_weather() {
 * function that takes the data from connect_open_weather and appends that data to the DOM.
 **/
 function add_weather_data_to_dom(data){
-  console.log(data.weather[0].icon);
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
   $('.weather_description').text(data.weather[0].main);
   $('.wind').text("Wind Speed" + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
@@ -110,23 +108,24 @@ function add_weather_data_to_dom(data){
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
 
-/** function: connect_flickr
-* connect to flickr with an ajax call, recieve images relating to the music playing
-* @param: weather - used to pull weather specific images im so background of the page relates to the music that is playing
-*/
-function connect_flickr() {
-  console.log(weather);
+function get_song_id() {
   $.ajax({
-    dataType: 'json',
-    url: 'https://api.flickr.com/services/rest',
-    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather+' weather, nature, outside, landscape', 'extras': 'url_s', 'content-type': '1', 'privacy_filter': '1', 'safe_search': '2', 'per_page': '10'},
+    dataType: 'jsonp',
+    data: {'apikey': '9852c0888f48a68d74dfe23ef83f360b', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
+    url: 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get',
     method: 'get',
     success: function(response) {
-      console.log(response);
+      console.log(response.message.body.lyrics.lyrics_body);
     },
-    error: function(response){
+    error: function(response) {
       console.log(response);
     }
+  });
+}
+
+function get_lyrics_with_song_id() {
+  $.ajax({
+
   });
 }
 
