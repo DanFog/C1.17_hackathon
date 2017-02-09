@@ -41,9 +41,6 @@ function connect_spotify() {
       var randomIndex = parseInt(Math.random() * response.playlists.items.length);
       var uri = response.playlists.items[randomIndex].uri;
       $('#spotify_player')[0].src = 'https://embed.spotify.com/?uri=' + uri;
-      window.setTimeout(function() {
-        get_song_information();
-      }, 5000);
     });
 }
 
