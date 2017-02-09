@@ -67,7 +67,7 @@ function connect_flickr() {
   $.ajax({
     dataType: 'json',
     url: 'https://api.flickr.com/services/rest',
-    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather+''},
+    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather+'', 'extras': 'url_l'},
     method: 'get',
     success: function(response) {
       console.log(response);
