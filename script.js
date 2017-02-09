@@ -1,4 +1,4 @@
-  /**
+/**
  * Created by ck111 on 2/8/2017.
  */
 
@@ -26,8 +26,8 @@ function initialize() {
 }
 
 /** function: connect_spotify
-* make ajax call to spotify. It takes and returns nothing. When this is called, 
-* Uses the global param: weather to search for "cloudy music" or "sunny music". 
+* make ajax call to spotify. It takes and returns nothing. When this is called,
+* Uses the global param: weather to search for "cloudy music" or "sunny music".
 * Then plays a random search result.
 * @function
 */
@@ -47,7 +47,7 @@ function connect_spotify() {
 /**
  * Grabs the song name and song artist as the page loads.
  * @function
- * 
+ *
  */
 function get_song_information() {
   var track_name = document.getElementById("track-name");
@@ -101,7 +101,7 @@ function connect_open_weather() {
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
   $('.weather_description').text(data.weather[0].description);
-  $('.wind').text("Wind Speed" + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
+  $('.wind').text("Wind Speed " + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
   $('.humidity').text(data.main.humidity + "% Humidity");
   temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
