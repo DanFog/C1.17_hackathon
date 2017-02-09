@@ -22,7 +22,7 @@ function initialize() {
       store_zip();
     }
   });
-  get_song_id();
+  //get_song_id();
 }
 
 /** function: connect_spotify
