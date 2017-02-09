@@ -189,8 +189,5 @@ function display_background_according_to_weather(weather){
         break;
       case "Additional":
         $(".parallax").css("background-image", "url(assets/weather_additional.jpg)");
-        break;
-      default:
-        $(".parallax").css("background-image", "url(assets/weather_default.jpg)");
-  }
+      }
 }
