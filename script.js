@@ -36,22 +36,22 @@ function connect_open_weather() {
   if(typeof user_location == 'object') {
     $.ajax({
       dataType: 'json',
-      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'lat': user_location.latitude, 'lon': user_location.longitude},
+      data: {'appid': 'be0e3cebb6fe11227cc9ee172503e502', 'lat': user_location.latitude, 'lon': user_location.longitude},
       url: 'http://api.openweathermap.org/data/2.5/weather',
       method: 'get',
       success: function(response) {
-        console.log(response);
+        weather = response.weather[0].main;
         connect_flickr();
       }
     });
   } else if(typeof user_location == 'string' && user_location.length === 5) {
     $.ajax({
       dataType: 'json',
-      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'zip': user_location+',us'},
+      data: {'appid': 'be0e3cebb6fe11227cc9ee172503e502', 'zip': user_location+',us'},
       url: 'http://api.openweathermap.org/data/2.5/weather',
       method: 'get',
       success: function(response) {
-        console.log(response);
+        weather=response.weather[0].main;
         connect_flickr();
       }
     });
@@ -62,17 +62,18 @@ function connect_open_weather() {
 * connect to flickr with an ajax call, recieve images relating to the music playing
 * @param: weather - used to pull weather specific images im so background of the page relates to the music that is playing
 */
-function connect_flickr(weather) {
+function connect_flickr() {
+  console.log(weather);
   $.ajax({
     dataType: 'json',
     url: 'https://api.flickr.com/services/rest',
-    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather},
+    data: {'method': 'flickr.photos.search', 'format': 'json', 'api_key': '861fb3b1066db30a72c4220085edcade', 'nojsoncallback': '1', 'text': weather+''},
     method: 'get',
     success: function(response) {
-      console.log(response)
+      console.log(response);
     },
     error: function(response){
-      console.log(response)
+      console.log(response);
     }
   });
 }
