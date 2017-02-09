@@ -17,9 +17,14 @@ $(document).ready(initialize);
 function initialize() {
   $('#zip_code_submit').click(store_zip);
   get_geo_location();
-  $(document).on('keypress', function(e){
+  $("#zip_code_input").on('keypress', function(e){
+    console.log(e.which);
     if (e.which === 13 || e.keyCode === 13){
+      e.preventDefault();
       store_zip();
+    }
+    if (e.which < 48 || e.which > 57){
+      return false;
     }
   });
   //get_song_id();
