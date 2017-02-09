@@ -6,8 +6,27 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-color: transparent;
 }
 
+.parallax {
+  height: 100vh;
+  background-image: url("assets/weather_default.jpg");
+  width: 100vw;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.8;
+  position: fixed;
+
+}
+
+.navbar {
+  background-color: #009688;
+  opacity: 1;
+  padding: 0px;
+  margin: 0px;
+}
 /*.navbar {*/
   /*background-color: transparent;*/
   /*border-top: 0;*/
@@ -22,9 +41,21 @@ body {
 }
 
 #weather{
+  top: 125vh;
   background-color: #009688;
+  background-color: white;
+  border-radius: 75vw
 }
 
 iframe{
   width: 100%;
+}
+
+#about {
+  top: 200vh;;
+  text-align: center;
+}
+
+#spotify {
+  top: 25vh;
 }
