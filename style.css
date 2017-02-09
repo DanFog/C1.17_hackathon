@@ -44,8 +44,24 @@ body {
   top: 125vh;
   background-color: #009688;
   background-color: white;
-  border-radius: 75vw
+  opacity: 0.6;
+  /*border-radius: 75vw;*/
+  font-weight: 900;
 }
+
+.weather_img{
+  width: 5em;
+}
+
+.temperature h2{
+  font-size: 3.5em;
+}
+
+.weather_details{
+  padding-top: 5%;
+  padding-left: 5%;
+}
+
 
 iframe{
   width: 100%;
