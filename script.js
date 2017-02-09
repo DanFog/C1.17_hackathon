@@ -164,33 +164,33 @@ function store_zip() {
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
-        $("body").css("background-image", "url(assets/weather_clear.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_clear.jpg)");
         break;
       case "Clouds":
-        $("body").css("background-image", "url(assets/weather_clouds.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_clouds.jpg)");
         break;
       case "Extreme":
-        $("body").css("background-image", "url(assets/weather_extreme.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_extreme.jpg)");
         break;
       case "Atmosphere":
-        $("body").css("background-image", "url(assets/weather_atmosphere.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_atmosphere.jpg)");
         break;
       case "Snow":
-        $("body").css("background-image", "url(assets/weather_snow.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_snow.jpg)");
         break;
       case "Rain":
-        $("body").css("background-image", "url(assets/weather_rain.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_rain.jpg)");
         break;
       case "Drizzle":
-        $("body").css("background-image", "url(assets/weather_drizzle.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_drizzle.jpg)");
         break;
       case "Thunderstorm":
-        $("body").css("background-image", "url(assets/weather_thunderstorm.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_thunderstorm.jpg)");
         break;
       case "Additional":
-        $("body").css("background-image", "url(assets/weather_additional.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_additional.jpg)");
         break;
       default:
-        $("body").css("background-image", "url(assets/weather_default.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_default.jpg)");
   }
 }
