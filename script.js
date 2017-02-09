@@ -20,11 +20,22 @@ function initialize() {
 }
 
 /** function: connect_spotify
-* make ajax call to spotify
-*
+* make ajax call to spotify. It takes and returns nothing. When this is called, 
+* Uses the global param: weather to search for "cloudy music" or "sunny music". 
+* Then plays a random search result.
+* @function
 */
 function connect_spotify() {
+    var settings = {
+      "url": "https://api.spotify.com/v1/search?q=" + weather + "+music&type=playlist",
+      "method": "GET",
+    };
 
+    $.ajax(settings).done(function (response) {
+      var randomIndex = parseInt(Math.random() * response.playlists.items.length);
+      var uri = response.playlists.items[randomIndex].uri;
+      $('#spotify_player')[0].src = 'https://embed.spotify.com/?uri=' + uri;
+    });
 }
 
 /** function: connect_open_weather
