@@ -141,7 +141,7 @@ function store_zip() {
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
-        $("body").css("background-image", "url(assets/weather_extreme.jpg)");
+        $("body").css("background-image", "url(assets/weather_clear.jpg)");
         break;
       case "Clouds":
         $("body").css("background-image", "url(assets/weather_clouds.jpg)");
