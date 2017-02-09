@@ -22,15 +22,38 @@ function initialize() {
       store_zip();
     }
   });
-  get_song_id();
+  //get_song_id();
 }
 
 /** function: connect_spotify
-* make ajax call to spotify
-*
+* make ajax call to spotify. It takes and returns nothing. When this is called, 
+* Uses the global param: weather to search for "cloudy music" or "sunny music". 
+* Then plays a random search result.
+* @function
 */
 function connect_spotify() {
+    var settings = {
+      "url": "https://api.spotify.com/v1/search?q=" + weather + "+music&type=playlist",
+      "method": "GET",
+    };
 
+    $.ajax(settings).done(function (response) {
+      var randomIndex = parseInt(Math.random() * response.playlists.items.length);
+      var uri = response.playlists.items[randomIndex].uri;
+      $('#spotify_player')[0].src = 'https://embed.spotify.com/?uri=' + uri;
+    });
+}
+
+/**
+ * Grabs the song name and song artist as the page loads.
+ * @function
+ * 
+ */
+function get_song_information() {
+  var track_name = document.getElementById("track-name");
+  var track_artist = document.getElementById("track-arist");
+  console.log(track_name);
+  console.log(track_artist);
 }
 
 /** function: connect_open_weather
@@ -48,6 +71,8 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         weather = response.weather[0].main;
+        connect_spotify();
+        display_background_according_to_weather(weather);
         console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
@@ -61,6 +86,7 @@ function connect_open_weather() {
       method: 'get',
       success: function(response) {
         weather=response.weather[0].main;
+        display_background_according_to_weather(weather);
         console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
@@ -74,9 +100,9 @@ function connect_open_weather() {
 **/
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
-  $('.weather_description').text(data.weather[0].main);
-  $('.wind').text((data.wind.speed * 2.23).toFixed(1) + ' MPH');
-  $('.humidity').text(data.main.humidity + "%");
+  $('.weather_description').text(data.weather[0].description);
+  $('.wind').text("Wind Speed" + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
+  $('.humidity').text(data.main.humidity + "% Humidity");
   temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
@@ -133,4 +159,38 @@ function store_zip() {
   user_location = $('#zip_code_input').val();
   console.log(user_location);
   connect_open_weather();
+}
+
+function display_background_according_to_weather(weather){
+  switch (weather){
+      case "Clear":
+        $("body").css("background-image", "url(assets/weather_clear.jpg)");
+        break;
+      case "Clouds":
+        $("body").css("background-image", "url(assets/weather_clouds.jpg)");
+        break;
+      case "Extreme":
+        $("body").css("background-image", "url(assets/weather_extreme.jpg)");
+        break;
+      case "Atmosphere":
+        $("body").css("background-image", "url(assets/weather_atmosphere.jpg)");
+        break;
+      case "Snow":
+        $("body").css("background-image", "url(assets/weather_snow.jpg)");
+        break;
+      case "Rain":
+        $("body").css("background-image", "url(assets/weather_rain.jpg)");
+        break;
+      case "Drizzle":
+        $("body").css("background-image", "url(assets/weather_drizzle.jpg)");
+        break;
+      case "Thunderstorm":
+        $("body").css("background-image", "url(assets/weather_thunderstorm.jpg)");
+        break;
+      case "Additional":
+        $("body").css("background-image", "url(assets/weather_additional.jpg)");
+        break;
+      default:
+        $("body").css("background-image", "url(assets/weather_default.jpg)");
+  }
 }

@@ -11,36 +11,56 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
+<body data-spy="scroll" data-target=".navbar">
     <!-- Navbar -->
-    <div class="navbar navbar-inverse" id="header">
-        <div id="logo">
-            <img src="assets/spotify-1.png" alt='app logo'/>
+    <nav class="navbar navbar-inverse navbar-static-top" id="header">
+        <div class="containter-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation_bar">
+                </button>
+                <a class="navbar-brand" href="#">WeatherMusic</a>
+            </div>
+            <div>
+                <div class="collapse navbar-collapse" id="navigation_bar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <div id="zip_code" class="form-group">
+                            <div class='form-group input-group'>
+                        <span class="input-group-addon">
+                            <span class='glyphicon glyphicon-map-marker'></span>
+                        </span>
+                                <input class='form-control' type="text" id="zip_code_input" name="zipcode" placeholder="Zip Code">
+                            </div>
+                            <button type='button' id="zip_code_submit" class='btn btn-success'>Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-
+    </nav>
     <!-- Container -->
-    <div class='container-fluid'>
-
-      <!-- Weahter div -->
-      <div id='weather' class='col-xs-offset-2 col-xs-8'>
-        <div class='weather_info col-xs-offset-2 col-xs-2'>
-          <img class="weather_img"/>
-          <p class='weather_description'></p>
-        </div>
-        <div class='temperature col-xs-offset-2 col-xs-2'>
-          <h2></h2>
-        </div>
-        <div class='weather_details col-xs-offset-2 col-xs-2'>
-          <p class='wind'> </p>
-          <p class='humidity'></p>
-        </div>
-      </div>
+    <div id="main_section" class='container'>
+        <div class="row">
+            <!-- Weather div -->
+            <div id='weather' class='col-xs-8 col-md-4'>
+                <div class='weather_info col-xs-offset-2 col-xs-2'>
+                    <img class="weather_img"/>
+                    <p class='weather_description'></p>
+                </div>
+                <div class='temperature col-xs-offset-2 col-xs-2'>
+                    <h2></h2>
+                </div>
+                <div class='weather_details col-xs-offset-2 col-xs-2'>
+                    <p class='wind'> </p>
+                    <p class='humidity'></p>
+                </div>
+            </div>
 
       <!-- Spotify div -->
-      <div id='spotify' class='col-xs-offset-4'>
-        <iframe src="https://embed.spotify.com/?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+      <div id='spotify' class='col-md-4'>
+        <iframe id="spotify_player" src="https://embed.spotify.com/?uri=spotify:user:spotify:playlist:3rgsDhGHZxZ9sB9DQWQfuf" width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
       </div>
       <br>
       <br>
@@ -51,15 +71,12 @@
           </span>
           <input class='form-control' type="text" id="zip_code_input" name="zipcode" placeholder="Zip Code">
         </div>
-        <button type='button' id="zip_code_submit" class='btn btn-success'>Submit</button>
-      </div>
-
     </div>
-
+    <!-- About -->
+    <div id="about" class="container-fluid">
+        <h1>About the App</h1>
+    </div>
     <!-- footer -->
-    <div id="footer">
-
-    </div>
-
+    <div id="footer"></div>
 </body>
 </html>
