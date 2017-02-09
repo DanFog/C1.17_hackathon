@@ -7,7 +7,7 @@
 */
 
 var user_location;
-var weather = 'Sunny';
+var weather_data;
 
 $(document).ready(initialize);
 
@@ -17,6 +17,11 @@ $(document).ready(initialize);
 function initialize() {
   $('#zip_code_submit').click(store_zip);
   get_geo_location();
+  $(document).on('keypress', function(e){
+    if (e.which === 13 || e.keyCode === 13){
+      store_zip();
+    }
+  });
 }
 
 /** function: connect_spotify
@@ -33,28 +38,45 @@ function connect_spotify() {
 * @param: location - the location of the user, either a user entered zipcode, or an object holding latitude and longitude
 */
 function connect_open_weather() {
+  var weahter_data;
   if(typeof user_location == 'object') {
     $.ajax({
       dataType: 'json',
-      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'lat': user_location.latitude, 'lon': user_location.longitude},
+      data: {'appid': 'be0e3cebb6fe11227cc9ee172503e502', 'lat': user_location.latitude, 'lon': user_location.longitude},
       url: 'http://api.openweathermap.org/data/2.5/weather',
       method: 'get',
       success: function(response) {
         console.log(response);
-
+        weather_data = response;
+        add_weather_data_to_dom(weather_data);
       }
     });
   } else if(typeof user_location == 'string' && user_location.length === 5) {
     $.ajax({
       dataType: 'json',
-      data: {'appid': 'f712154df651cacad4b38bdf845228e6', 'zip': user_location+',us'},
+      data: {'appid': 'be0e3cebb6fe11227cc9ee172503e502', 'zip': user_location+',us'},
       url: 'http://api.openweathermap.org/data/2.5/weather',
       method: 'get',
       success: function(response) {
         console.log(response);
+        weather_data = response;
+        add_weather_data_to_dom(weather_data);
       }
     });
   }
+}
+
+/**
+* function that takes the data from connect_open_weather and appends that data to the DOM.
+**/
+function add_weather_data_to_dom(data){
+  console.log(data.weather[0].icon);
+  $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
+  $('.weather_description').text(data.weather[0].main);
+  $('.wind').text((data.wind.speed * 2.23).toFixed(1) + ' MPH');
+  $('.humidity').text(data.main.humidity + "%");
+  temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
+  $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
 
 /** function: connect_flickr
