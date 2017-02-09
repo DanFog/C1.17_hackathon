@@ -40,7 +40,22 @@ function connect_spotify() {
       var randomIndex = parseInt(Math.random() * response.playlists.items.length);
       var uri = response.playlists.items[randomIndex].uri;
       $('#spotify_player')[0].src = 'https://embed.spotify.com/?uri=' + uri;
+      window.setTimeout(function() {
+        get_song_information();
+      }, 5000);
     });
+}
+
+/**
+ * Grabs the song name and song artist as the page loads.
+ * @function
+ * 
+ */
+function get_song_information() {
+  var track_name = document.getElementById("track-name");
+  var track_artist = document.getElementById("track-arist");
+  console.log(track_name);
+  console.log(track_artist);
 }
 
 /** function: connect_open_weather
@@ -59,6 +74,7 @@ function connect_open_weather() {
       success: function(response) {
         weather = response.weather[0].main;
         connect_flickr();
+        connect_spotify();
         console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
