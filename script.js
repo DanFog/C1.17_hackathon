@@ -27,7 +27,6 @@ function initialize() {
       return false;
     }
   });
-  //get_song_id();
 }
 
 /** function: connect_spotify
@@ -112,7 +111,7 @@ function add_weather_data_to_dom(data){
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
 
-function get_song_id() {
+function get_song_id(track_name, artist_name) {
   $.ajax({
     dataType: 'jsonp',
     data: {'apikey': '9852c0888f48a68d74dfe23ef83f360b', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
@@ -127,10 +126,10 @@ function get_song_id() {
   });
 }
 
-function get_lyrics_with_song_id() {
-  $.ajax({
-
-  });
+function get_all_lyrics(song_array) {
+  for(var i = 0; i < song_array.length-1; i++) {
+    get_song_id(song_array[i].song, song_array[i].artist);
+  }
 }
 
 /** function: get_geo_location
