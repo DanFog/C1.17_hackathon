@@ -16,6 +16,7 @@ $(document).ready(initialize);
 
 /** function: initialize
 * function to add click handers, called on document ready
+* adds on keypress event handler for zip code input, checks if the input is a number or enter and does the appropriate action
 */
 function initialize() {
   $('#zip_code_submit').click(store_zip);
@@ -60,7 +61,6 @@ function connect_spotify() {
  *.@function
  * @param {string} url
  */
-
 function validate_song_is_different(url) {
   var settings = {
         "async": true,
@@ -110,12 +110,7 @@ function get_scraped_data(response) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
     matches[i].index = matches_row[i];
   }
-
-  console.log(matches);
-
-  get_all_lyrics(matches);
 }
-
 /**
  * Grabs the song name and song artist as the page loads.
  * @function
@@ -131,7 +126,7 @@ function get_scraped_data(response) {
 /** function: connect_open_weather
 * ajax call to open weather's api
 * stores weather in a global variable, weather
-* @param: location - the location of the user, either a user entered zipcode, or an object holding latitude and longitude
+* Uses and if statement to tell if the location if an object with latitude and longitude or a string of the zipcode
 */
 function connect_open_weather() {
   var weahter_data;
@@ -167,8 +162,9 @@ function connect_open_weather() {
   }
 }
 
-/**
-* function that takes the data from connect_open_weather and appends that data to the DOM.
+/** function: add_weather_data_to_dom
+* uses the data available from the data object and uses jquery to display it on the document
+* @param data: the object returned from the open_weather api
 **/
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
@@ -178,6 +174,12 @@ function add_weather_data_to_dom(data){
   temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
+
+/** function: get_song_id
+* @param: track_name: the name of the song that is being requested
+* @param: artist_name: the name of the artist who wrote the song
+* uses jquery and ajax to recieve an onject full of data about the song, mainly the lyrics
+*/
 
 function get_song_id(track_name, artist_name) {
   $.ajax({
@@ -196,6 +198,10 @@ function get_song_id(track_name, artist_name) {
   });
 }
 
+/** function: get_all_lyrics
+* @param: song_array: array of objects with song name and artist name
+* loops through the array, and calls get_song_id to get the lyrics of each one
+*/
 function get_all_lyrics(song_array) {
   for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
@@ -227,7 +233,7 @@ function store_geo_location(lat, long) {
 }
 
 /** function: store_zip
-*
+* stores the zip code from the input in the global variable user_location
 */
 function store_zip() {
   user_location = $('#zip_code_input').val();
@@ -236,11 +242,11 @@ function store_zip() {
 }
 
 /**
- * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy.
+ * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy. 
+ * Uses a switch to change the background-image depending on the value that was passed in
  * @function
  * @params {string} weather
  */ 
-
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
