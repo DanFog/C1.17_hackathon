@@ -19,9 +19,14 @@ $(document).ready(initialize);
 function initialize() {
   $('#zip_code_submit').click(store_zip);
   get_geo_location();
-  $(document).on('keypress', function(e){
+  $("#zip_code_input").on('keypress', function(e){
+    console.log(e.which);
     if (e.which === 13 || e.keyCode === 13){
+      e.preventDefault();
       store_zip();
+    }
+    if (e.which < 48 || e.which > 57){
+      return false;
     }
   });
   //get_song_id();
@@ -156,7 +161,7 @@ function connect_open_weather() {
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
   $('.weather_description').text(data.weather[0].description);
-  $('.wind').text("Wind Speed " + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
+  $('.wind').text("Wind Speed: " + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
   $('.humidity').text(data.main.humidity + "% Humidity");
   temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
@@ -222,33 +227,30 @@ function store_zip() {
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
-        $("body").css("background-image", "url(assets/weather_clear.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_clear.jpg)");
         break;
       case "Clouds":
-        $("body").css("background-image", "url(assets/weather_clouds.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_clouds.jpg)");
         break;
       case "Extreme":
-        $("body").css("background-image", "url(assets/weather_extreme.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_extreme.jpg)");
         break;
       case "Atmosphere":
-        $("body").css("background-image", "url(assets/weather_atmosphere.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_atmosphere.jpg)");
         break;
       case "Snow":
-        $("body").css("background-image", "url(assets/weather_snow.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_snow.jpg)");
         break;
       case "Rain":
-        $("body").css("background-image", "url(assets/weather_rain.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_rain.jpg)");
         break;
       case "Drizzle":
-        $("body").css("background-image", "url(assets/weather_drizzle.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_drizzle.jpg)");
         break;
       case "Thunderstorm":
-        $("body").css("background-image", "url(assets/weather_thunderstorm.jpg)");
+        $(".parallax").css("background-image", "url(assets/weather_thunderstorm.jpg)");
         break;
       case "Additional":
-        $("body").css("background-image", "url(assets/weather_additional.jpg)");
-        break;
-      default:
-        $("body").css("background-image", "url(assets/weather_default.jpg)");
-  }
+        $(".parallax").css("background-image", "url(assets/weather_additional.jpg)");
+      }
 }
