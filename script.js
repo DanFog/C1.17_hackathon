@@ -45,9 +45,7 @@ function connect_spotify() {
       var url = 'https://embed.spotify.com/?uri=' + uri;
       $('#spotify_player')[0].src = url;
 
-      setInterval(function() {
-        validate_song_is_different(url);
-      }, 3000);
+      validate_song_is_different(url);
 
     });
 }
@@ -63,20 +61,38 @@ function validate_song_is_different(url) {
           "postman-token": "5e9a334c-48f9-52dc-d0eb-949193be7e1f"
         }
       };
+      console.log(url);
 
       $.ajax(settings).done(function (response) {
         var current_track_name = response.replace(/[\w\W]*<div id\=\"track\-name\" class\=\"name\"><a.+?>(.+?)<[\w\W]*/, "$1");
         var current_artist_name = response.replace(/[\w\W]*<div id\=\"track\-artists\" class\=\"creator\"><span.+?><a.+?>(.+?)<[\w\W]*/, "$1");
-        if (current_track_name == track_name) {
-          console.log("Same Track");
-          return;
-        }
+        get_scraped_data(response);
+        // if (current_track_name == track_name) {
+        //   console.log("Same Track");
+        //   return;
+        // }
 
         track_name = current_track_name;
         artist_name = current_artist_name;
         get_song_id(track_name, artist_name);
         
       });
+}
+
+function get_scraped_data(response) {
+  var matches = response.match(/track\-artist\">([\w\W]+?)</g).reduce(function(firstItem, secondItem) {
+    firstItem.push({artist: secondItem.replace(/.*\">(.*)<.*/, "$1")});
+    return firstItem;
+  }, []);
+
+  var matches_track = response.match(/track\-row\-info \"([\w\W]+?)</g);
+  console.log(matches_track);
+
+  for (let i = 0; i < matches.length; i++) {
+    matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
+  }
+
+  console.log(matches);
 }
 
 
