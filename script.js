@@ -32,7 +32,7 @@ function initialize() {
   });
 }
 
-/** function: connect_spotify
+/** 
 * make ajax call to spotify. It takes and returns nothing. When this is called,
 * Uses the global param: weather to search for "cloudy music" or "sunny music".
 * Then plays a random search result.
@@ -55,6 +55,12 @@ function connect_spotify() {
     });
 }
 
+/**
+ * It checks to see if the last song is the same as the current song. This is not used. 
+ *.@function
+ * @param {string} url
+ */
+
 function validate_song_is_different(url) {
   var settings = {
         "async": true,
@@ -72,10 +78,6 @@ function validate_song_is_different(url) {
         var current_track_name = response.replace(/[\w\W]*<div id\=\"track\-name\" class\=\"name\"><a.+?>(.+?)<[\w\W]*/, "$1");
         var current_artist_name = response.replace(/[\w\W]*<div id\=\"track\-artists\" class\=\"creator\"><span.+?><a.+?>(.+?)<[\w\W]*/, "$1");
         get_scraped_data(response);
-        // if (current_track_name == track_name) {
-        //   console.log("Same Track");
-        //   return;
-        // }
 
         track_name = current_track_name;
         artist_name = current_artist_name;
@@ -83,6 +85,12 @@ function validate_song_is_different(url) {
 
       });
 }
+
+/** 
+ * Takes an array and populates it with the artist name, song name, and index. We grab this data from spotify. We scrape it.
+ * @function
+ * @params {html} response 
+ */
 
 function get_scraped_data(response) {
   var matches = response.match(/track\-artist\">([\w\W]+?)</g).reduce(function(firstItem, secondItem) {
@@ -103,16 +111,11 @@ function get_scraped_data(response) {
     matches[i].index = matches_row[i];
   }
 
-
   console.log(matches);
 
   get_all_lyrics(matches);
 }
 
-
-function display_lyrics(lyrics) {
-  console.log(lyrics);
-}
 /**
  * Grabs the song name and song artist as the page loads.
  * @function
@@ -231,6 +234,12 @@ function store_zip() {
   connect_open_weather();
   connect_spotify();
 }
+
+/**
+ * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy.
+ * @function
+ * @params {string} weather
+ */ 
 
 function display_background_according_to_weather(weather){
   switch (weather){
