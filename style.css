@@ -101,3 +101,8 @@ iframe{
 #weather_gap {
   height: 80vh;
 }
+
+.parallax-clouds {
+    position: absolute;
+    width: 400px;
+}
