@@ -8,6 +8,8 @@
 
 var user_location;
 var weather_data;
+var track_name;
+var artist_name;
 
 $(document).ready(initialize);
 
@@ -27,7 +29,6 @@ function initialize() {
       return false;
     }
   });
-  //get_song_id();
 }
 
 /** function: connect_spotify
@@ -45,21 +46,74 @@ function connect_spotify() {
     $.ajax(settings).done(function (response) {
       var randomIndex = parseInt(Math.random() * response.playlists.items.length);
       var uri = response.playlists.items[randomIndex].uri;
-      $('#spotify_player')[0].src = 'https://embed.spotify.com/?uri=' + uri;
+      var url = 'https://embed.spotify.com/?uri=' + uri;
+      $('#spotify_player')[0].src = url;
+
+      validate_song_is_different(url);
+
     });
 }
 
+function validate_song_is_different(url) {
+  var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": 'proxy.php?url='+encodeURI(url),
+        "method": "GET",
+        "headers": {
+          "cache-control": "no-cache",
+          "postman-token": "5e9a334c-48f9-52dc-d0eb-949193be7e1f"
+        }
+      };
+      console.log(url);
+
+      $.ajax(settings).done(function (response) {
+        var current_track_name = response.replace(/[\w\W]*<div id\=\"track\-name\" class\=\"name\"><a.+?>(.+?)<[\w\W]*/, "$1");
+        var current_artist_name = response.replace(/[\w\W]*<div id\=\"track\-artists\" class\=\"creator\"><span.+?><a.+?>(.+?)<[\w\W]*/, "$1");
+        get_scraped_data(response);
+        // if (current_track_name == track_name) {
+        //   console.log("Same Track");
+        //   return;
+        // }
+
+        track_name = current_track_name;
+        artist_name = current_artist_name;
+        get_song_id(track_name, artist_name);
+
+      });
+}
+
+function get_scraped_data(response) {
+  var matches = response.match(/track\-artist\">([\w\W]+?)</g).reduce(function(firstItem, secondItem) {
+    firstItem.push({artist: secondItem.replace(/.*\">(.*)<.*/, "$1")});
+    return firstItem;
+  }, []);
+
+  var matches_track = response.match(/track\-row\-info \"([\w\W]+?)</g);
+  console.log(matches_track);
+
+  for (let i = 0; i < matches.length; i++) {
+    matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
+  }
+  get_all_lyrics(matches);
+  console.log(matches);
+}
+
+
+function display_lyrics(lyrics) {
+  console.log(lyrics);
+}
 /**
  * Grabs the song name and song artist as the page loads.
  * @function
  *
  */
-function get_song_information() {
-  var track_name = document.getElementById("track-name");
-  var track_artist = document.getElementById("track-arist");
-  console.log(track_name);
-  console.log(track_artist);
-}
+// function get_song_information() {
+//   var track_name = document.getElementById("track-name");
+//   var track_artist = document.getElementById("track-arist");
+//   console.log(track_name);
+//   console.log(track_artist);
+// }
 
 /** function: connect_open_weather
 * ajax call to open weather's api
@@ -112,25 +166,25 @@ function add_weather_data_to_dom(data){
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
 
-function get_song_id() {
+function get_song_id(track_name, artist_name) {
   $.ajax({
     dataType: 'jsonp',
     data: {'apikey': '9852c0888f48a68d74dfe23ef83f360b', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
     url: 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get',
     method: 'get',
     success: function(response) {
-      console.log(response.message.body.lyrics.lyrics_body);
-    },
-    error: function(response) {
-      console.log(response);
+      if(response.message.body.lyrics.lyrics_body){
+        display_lyrics(response.message.body.lyrics.lyrics_body);
+      }
+      return;
     }
   });
 }
 
-function get_lyrics_with_song_id() {
-  $.ajax({
-
-  });
+function get_all_lyrics(song_array) {
+  for(var i = 0; i < song_array.length-1 && i < 20; i++) {
+    get_song_id(song_array[i].song, song_array[i].artist);
+  }
 }
 
 /** function: get_geo_location
@@ -164,6 +218,7 @@ function store_zip() {
   user_location = $('#zip_code_input').val();
   console.log(user_location);
   connect_open_weather();
+  connect_spotify();
 }
 
 function display_background_according_to_weather(weather){
