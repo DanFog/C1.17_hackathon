@@ -31,6 +31,7 @@ function initialize() {
     }
   });
   $('.dropdown-toggle').on('click', add_song_titles_to_menu);
+  $('.dropdown-menu li').on('click', add_song_to_dom);
 }
 
 /** function: connect_spotify
@@ -263,5 +264,10 @@ function add_song_titles_to_menu(){
 }
 
 function add_song_to_dom(){
-
+  var lyrics_button = $('.dropdown-menu').find('li');
+  lyrics_button.on('click', function(e){
+    console.log($(this).index());
+    var lyrics_index = $(this).index();
+    $('.lyrics_display').text(lyrics[lyrics_index].lyrics);
+  });
 }
