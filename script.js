@@ -30,7 +30,7 @@ function initialize() {
       return false;
     }
   });
-  $('.dropdown-toggle').on('click', add_song_lyrics_to_dom);
+  $('.dropdown-toggle').on('click', add_song_titles_to_menu);
 }
 
 /** function: connect_spotify
@@ -255,11 +255,13 @@ function display_background_according_to_weather(weather){
       }
 }
 
-function add_song_lyrics_to_dom(){
-  console.log(741);
+function add_song_titles_to_menu(){
   var lyric_buttons = $(".dropdown-menu").find('a');
   for (var i = 0; i < lyrics.length-1; i++){
     $(lyric_buttons[i]).text(lyrics[i].track);
   }
-  console.log('asdfasdf');
+}
+
+function add_song_to_dom(){
+
 }
