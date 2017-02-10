@@ -33,7 +33,7 @@ function initialize() {
   });
 }
 
-/** 
+/**
 * make ajax call to spotify. It takes and returns nothing. When this is called,
 * Uses the global param: weather to search for "cloudy music" or "sunny music".
 * Then plays a random search result.
@@ -57,7 +57,7 @@ function connect_spotify() {
 }
 
 /**
- * It checks to see if the last song is the same as the current song. This is not used. 
+ * It checks to see if the last song is the same as the current song. This is not used.
  *.@function
  * @param {string} url
  */
@@ -86,10 +86,10 @@ function validate_song_is_different(url) {
       });
 }
 
-/** 
+/**
  * Takes an array and populates it with the artist name, song name, and index. We grab this data from spotify. We scrape it.
  * @function
- * @params {html} response 
+ * @params {html} response
  */
 
 function get_scraped_data(response) {
@@ -110,6 +110,7 @@ function get_scraped_data(response) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
     matches[i].index = matches_row[i];
   }
+  get_all_lyrics(matches);
 }
 /**
  * Grabs the song name and song artist as the page loads.
@@ -184,16 +185,15 @@ function add_weather_data_to_dom(data){
 function get_song_id(track_name, artist_name) {
   $.ajax({
     dataType: 'jsonp',
-    data: {'apikey': '9852c0888f48a68d74dfe23ef83f360b', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
+    data: {'apikey': 'f23652a89052539aab022e77903e1dff', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
     url: 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get',
     method: 'get',
     success: function(response) {
-      if(response.message.body.lyrics.lyrics_body){
+      if(typeof response.message.body.lyrics.lyrics_body != 'undefined'){
+        console.log(response.message.body.lyrics.lyrics_body);
         var temp_obj = {'track': track_name, 'artist': artist_name, 'lyrics': response.message.body.lyrics.lyrics_body};
         lyrics.push(temp_obj);
-        console.log(temp_obj);
       }
-      return;
     }
   });
 }
@@ -206,7 +206,6 @@ function get_all_lyrics(song_array) {
   for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
   }
-  console.log(lyrics);
 }
 
 /** function: get_geo_location
@@ -242,11 +241,11 @@ function store_zip() {
 }
 
 /**
- * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy. 
+ * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy.
  * Uses a switch to change the background-image depending on the value that was passed in
  * @function
  * @params {string} weather
- */ 
+ */
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
