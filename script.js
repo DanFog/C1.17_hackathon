@@ -10,6 +10,7 @@ var user_location;
 var weather_data;
 var track_name;
 var artist_name;
+var lyrics = [];
 
 $(document).ready(initialize);
 
@@ -174,7 +175,9 @@ function get_song_id(track_name, artist_name) {
     method: 'get',
     success: function(response) {
       if(response.message.body.lyrics.lyrics_body){
-        display_lyrics(response.message.body.lyrics.lyrics_body);
+        var temp_obj = {'track': track_name, 'artist': artist_name, 'lyrics': response.message.body.lyrics.lyrics_body};
+        lyrics.push(temp_obj);
+        console.log(temp_obj);
       }
       return;
     }
@@ -185,6 +188,7 @@ function get_all_lyrics(song_array) {
   for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
   }
+  console.log(lyrics);
 }
 
 /** function: get_geo_location
@@ -214,9 +218,7 @@ function store_geo_location(lat, long) {
 *
 */
 function store_zip() {
-  console.log('clicked');
   user_location = $('#zip_code_input').val();
-  console.log(user_location);
   connect_open_weather();
   connect_spotify();
 }
