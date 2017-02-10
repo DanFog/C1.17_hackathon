@@ -25,6 +25,7 @@ function initialize() {
     if (e.which === 13 || e.keyCode === 13){
       e.preventDefault();
       store_zip();
+
     }
     if (e.which < 48 || e.which > 57){
       return false;
@@ -110,6 +111,7 @@ function get_scraped_data(response) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
     matches[i].index = matches_row[i];
   }
+  lyrics = [];
   get_all_lyrics(matches);
 }
 /**
@@ -193,6 +195,7 @@ function get_song_id(track_name, artist_name) {
       }
     }
   });
+
 }
 
 /** function: get_all_lyrics
@@ -203,6 +206,8 @@ function get_all_lyrics(song_array) {
   for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
   }
+  add_song_titles_to_menu();
+  add_song_to_dom();
 }
 
 /** function: get_geo_location
@@ -278,6 +283,7 @@ function display_background_according_to_weather(weather){
 **/
 function add_song_titles_to_menu(){
   var lyric_buttons = $(".dropdown-menu").find('a');
+  $(".dropdown-menu a").text('');
   for (var i = 0; i < lyrics.length-1; i++){
     $(lyric_buttons[i]).text(decodeURIComponent(lyrics[i].track));
   }
