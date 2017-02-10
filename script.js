@@ -79,7 +79,7 @@ function validate_song_is_different(url) {
         track_name = current_track_name;
         artist_name = current_artist_name;
         get_song_id(track_name, artist_name);
-        
+
       });
 }
 
@@ -95,7 +95,7 @@ function get_scraped_data(response) {
   for (let i = 0; i < matches.length; i++) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
   }
-
+  get_all_lyrics(matches);
   console.log(matches);
 }
 
@@ -173,18 +173,16 @@ function get_song_id(track_name, artist_name) {
     url: 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get',
     method: 'get',
     success: function(response) {
-      display_lyrics(response.message.body.lyrics.lyrics_body);
+      if(response.message.body.lyrics.lyrics_body){
+        display_lyrics(response.message.body.lyrics.lyrics_body);
+      }
       return;
-    },
-    error: function(response) {
-      console.log(response);
-      return response;
     }
   });
 }
 
 function get_all_lyrics(song_array) {
-  for(var i = 0; i < song_array.length-1; i++) {
+  for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
   }
 }
