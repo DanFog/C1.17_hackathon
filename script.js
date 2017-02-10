@@ -279,7 +279,7 @@ function display_background_according_to_weather(weather){
 function add_song_titles_to_menu(){
   var lyric_buttons = $(".dropdown-menu").find('a');
   for (var i = 0; i < lyrics.length-1; i++){
-    $(lyric_buttons[i]).text(lyrics[i].track);
+    $(lyric_buttons[i]).text(decodeURIComponent(lyrics[i].track));
   }
 }
 /**
@@ -290,6 +290,6 @@ function add_song_to_dom(){
   var lyrics_button = $('.dropdown-menu').find('li');
   lyrics_button.on('click', function(e){
     var lyrics_index = $(this).index();
-    $('.lyrics_display').text(lyrics[lyrics_index].lyrics);
+    $('.lyrics_display').text(decodeURIComponent(lyrics[lyrics_index].lyrics));
   });
 }

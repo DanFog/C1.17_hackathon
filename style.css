@@ -128,3 +128,9 @@ iframe{
     margin-top: 10vh;
   }
 }
+
+.parallax-clouds {
+    position: absolute;
+    width: 400px;
+
+}
