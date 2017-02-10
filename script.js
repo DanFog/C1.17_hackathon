@@ -16,6 +16,7 @@ $(document).ready(initialize);
 
 /** function: initialize
 * function to add click handers, called on document ready
+* adds on keypress event handler for zip code input, checks if the input is a number or enter and does the appropriate action
 */
 function initialize() {
   $('#zip_code_submit').click(store_zip);
@@ -34,7 +35,7 @@ function initialize() {
   $('.dropdown-menu li').on('click', add_song_to_dom);
 }
 
-/** function: connect_spotify
+/**
 * make ajax call to spotify. It takes and returns nothing. When this is called,
 * Uses the global param: weather to search for "cloudy music" or "sunny music".
 * Then plays a random search result.
@@ -57,6 +58,11 @@ function connect_spotify() {
     });
 }
 
+/**
+ * It checks to see if the last song is the same as the current song. This is not used.
+ *.@function
+ * @param {string} url
+ */
 function validate_song_is_different(url) {
   var settings = {
         "async": true,
@@ -74,10 +80,6 @@ function validate_song_is_different(url) {
         var current_track_name = response.replace(/[\w\W]*<div id\=\"track\-name\" class\=\"name\"><a.+?>(.+?)<[\w\W]*/, "$1");
         var current_artist_name = response.replace(/[\w\W]*<div id\=\"track\-artists\" class\=\"creator\"><span.+?><a.+?>(.+?)<[\w\W]*/, "$1");
         get_scraped_data(response);
-        // if (current_track_name == track_name) {
-        //   console.log("Same Track");
-        //   return;
-        // }
 
         track_name = current_track_name;
         artist_name = current_artist_name;
@@ -86,6 +88,12 @@ function validate_song_is_different(url) {
       });
 }
 
+/**
+ * Takes an array and populates it with the artist name, song name, and index. We grab this data from spotify. We scrape it.
+ * @function
+ * @params {html} response
+ */
+
 function get_scraped_data(response) {
   var matches = response.match(/track\-artist\">([\w\W]+?)</g).reduce(function(firstItem, secondItem) {
     firstItem.push({artist: secondItem.replace(/.*\">(.*)<.*/, "$1")});
@@ -93,18 +101,18 @@ function get_scraped_data(response) {
   }, []);
 
   var matches_track = response.match(/track\-row\-info \"([\w\W]+?)</g);
-  console.log(matches_track);
+  var matches_row = response.match(/track\-row\-number\"\>(.+?)<\//g);
+
+  matches_row = matches_row.reduce(function(firstItem, secondItem) {
+    firstItem.push(secondItem.replace(/[\w\W]*>(\d+)<\//, "$1"));
+    return firstItem;
+  }, []);
 
   for (let i = 0; i < matches.length; i++) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
+    matches[i].index = matches_row[i];
   }
   get_all_lyrics(matches);
-  console.log(matches);
-}
-
-
-function display_lyrics(lyrics) {
-  console.log(lyrics);
 }
 /**
  * Grabs the song name and song artist as the page loads.
@@ -121,7 +129,7 @@ function display_lyrics(lyrics) {
 /** function: connect_open_weather
 * ajax call to open weather's api
 * stores weather in a global variable, weather
-* @param: location - the location of the user, either a user entered zipcode, or an object holding latitude and longitude
+* Uses and if statement to tell if the location if an object with latitude and longitude or a string of the zipcode
 */
 function connect_open_weather() {
   var weahter_data;
@@ -157,8 +165,9 @@ function connect_open_weather() {
   }
 }
 
-/**
-* function that takes the data from connect_open_weather and appends that data to the DOM.
+/** function: add_weather_data_to_dom
+* uses the data available from the data object and uses jquery to display it on the document
+* @param data: the object returned from the open_weather api
 **/
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
@@ -169,28 +178,36 @@ function add_weather_data_to_dom(data){
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
 }
 
+/** function: get_song_id
+* @param: track_name: the name of the song that is being requested
+* @param: artist_name: the name of the artist who wrote the song
+* uses jquery and ajax to recieve an onject full of data about the song, mainly the lyrics
+*/
+
 function get_song_id(track_name, artist_name) {
   $.ajax({
     dataType: 'jsonp',
-    data: {'apikey': '9852c0888f48a68d74dfe23ef83f360b', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
+    data: {'apikey': 'f23652a89052539aab022e77903e1dff', 'q_track': track_name, 'q_artist': artist_name, 'format': 'jsonp'},
     url: 'http://api.musixmatch.com/ws/1.1/matcher.lyrics.get',
     method: 'get',
     success: function(response) {
-      if(response.message.body.lyrics.lyrics_body){
+      if(typeof response.message.body.lyrics.lyrics_body != 'undefined'){
+        console.log(response.message.body.lyrics.lyrics_body);
         var temp_obj = {'track': track_name, 'artist': artist_name, 'lyrics': response.message.body.lyrics.lyrics_body};
         lyrics.push(temp_obj);
-        console.log(temp_obj);
       }
-      return;
     }
   });
 }
 
+/** function: get_all_lyrics
+* @param: song_array: array of objects with song name and artist name
+* loops through the array, and calls get_song_id to get the lyrics of each one
+*/
 function get_all_lyrics(song_array) {
   for(var i = 0; i < song_array.length-1 && i < 20; i++) {
     get_song_id(song_array[i].song, song_array[i].artist);
   }
-  console.log(lyrics);
 }
 
 /** function: get_geo_location
@@ -217,7 +234,7 @@ function store_geo_location(lat, long) {
 }
 
 /** function: store_zip
-*
+* stores the zip code from the input in the global variable user_location
 */
 function store_zip() {
   user_location = $('#zip_code_input').val();
@@ -225,6 +242,12 @@ function store_zip() {
   connect_spotify();
 }
 
+/**
+ * Chooses a background image based on weather condition. Such as cloudy, clear, snowy, rainy.
+ * Uses a switch to change the background-image depending on the value that was passed in
+ * @function
+ * @params {string} weather
+ */
 function display_background_according_to_weather(weather){
   switch (weather){
       case "Clear":
