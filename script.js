@@ -106,7 +106,7 @@ function connect_open_weather() {
 function add_weather_data_to_dom(data){
   $('.weather_img').attr('src', "http://openweathermap.org/img/w/" + data.weather[0].icon + ".png");
   $('.weather_description').text(data.weather[0].description);
-  $('.wind').text("Wind Speed " + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
+  $('.wind').text("Wind Speed: " + (data.wind.speed * 2.23).toFixed(1) + ' MPH');
   $('.humidity').text(data.main.humidity + "% Humidity");
   temp_in_farenheit = (((data.main.temp * 9/5) - 459.67)).toFixed(1);
   $('.temperature h2').text(temp_in_farenheit + String.fromCharCode(176) + 'F');
