@@ -9,10 +9,33 @@
     <script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .parallax-clouds {
+            position: absolute;
+            width: 400px;
+        }
+    </style>
 </head>
+
 <body data-spy="scroll" data-target=".navbar">
     <!-- Navbar -->
     <div class="parallax"></div>
+    
+    <img class="parallax-clouds" style="top: 100; left: 0" src="assets/solid-white-cloud-md.png">
+    <img class="parallax-clouds" style="top: 300; right: 0" src="assets/solid-white-cloud-md.png">
+    <img class="parallax-clouds" style="top: 600; left: 0" src="assets/solid-white-cloud-md.png">
+    <img class="parallax-clouds" style="top: 1100; left: 0" src="assets/solid-white-cloud-md.png">
+    <img class="parallax-clouds" style="top: 1000; right: 0" src="assets/solid-white-cloud-md.png">
+    <script>
+    document.addEventListener("scroll", function(e) {
+        console.log(document.getElementsByClassName("parallax-clouds"));
+        document.getElementsByClassName("parallax-clouds")[0].style.top = e.path[1].scrollY/2 + 100 + "px";
+        document.getElementsByClassName("parallax-clouds")[1].style.top = e.path[1].scrollY/3 + 300 + "px";
+        document.getElementsByClassName("parallax-clouds")[2].style.top = e.path[1].scrollY/2.5 + 750 + "px";
+        document.getElementsByClassName("parallax-clouds")[3].style.top = e.path[1].scrollY/4 + 1100 + "px";
+        document.getElementsByClassName("parallax-clouds")[4].style.top = e.path[1].scrollY/3 + 1000 + "px";
+    });
+    </script>
     <nav class="navbar navbar-inverse navbar-static-top" id="header">
         <div class="containter-fluid">
             <div class="navbar-header">
@@ -78,5 +101,6 @@
     </div>
     <!-- footer -->
     <div id="bottom-container"></div>
+
 </body>
 </html>
