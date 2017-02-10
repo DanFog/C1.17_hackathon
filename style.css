@@ -52,13 +52,21 @@ body {
   text-align: center;
 }
 
+.weather_info{
+  padding-top: 5%;
+}
+
 .weather_info img{
   height:7em;
 }
 
+.temperature{
+ padding-top: 8%;
+}
+
 .temperature h2{
   font-size: 3.5em;
-  padding-top: 8%;
+  text-align: center;
 }
 
 .weather_details{
@@ -104,4 +112,10 @@ iframe{
 
 .test{
   width: 100%;
+}
+
+@media (max-width: 991px){
+  #lyrics{
+    margin-top: 10vh;
+  }
 }
