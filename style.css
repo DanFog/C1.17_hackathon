@@ -27,7 +27,8 @@ body {
 }
 
 .navbar {
-  background-color: #009688;
+  background-color: grey;
+  color: white;
   opacity: 1;
   padding: 0px;
   margin: 0px;

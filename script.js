@@ -22,7 +22,6 @@ function initialize() {
   $('#zip_code_submit').click(store_zip);
   get_geo_location();
   $("#zip_code_input").on('keypress', function(e){
-    console.log(e.which);
     if (e.which === 13 || e.keyCode === 13){
       e.preventDefault();
       store_zip();
@@ -74,7 +73,6 @@ function validate_song_is_different(url) {
           "postman-token": "5e9a334c-48f9-52dc-d0eb-949193be7e1f"
         }
       };
-      console.log(url);
 
       $.ajax(settings).done(function (response) {
         var current_track_name = response.replace(/[\w\W]*<div id\=\"track\-name\" class\=\"name\"><a.+?>(.+?)<[\w\W]*/, "$1");
@@ -143,7 +141,6 @@ function connect_open_weather() {
         weather = response.weather[0].main;
         connect_spotify();
         display_background_according_to_weather(weather);
-        console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
       }
@@ -157,7 +154,6 @@ function connect_open_weather() {
       success: function(response) {
         weather=response.weather[0].main;
         display_background_according_to_weather(weather);
-        console.log(response);
         weather_data = response;
         add_weather_data_to_dom(weather_data);
       }
@@ -192,7 +188,6 @@ function get_song_id(track_name, artist_name) {
     method: 'get',
     success: function(response) {
       if(typeof response.message.body.lyrics.lyrics_body != 'undefined'){
-        console.log(response.message.body.lyrics.lyrics_body);
         var temp_obj = {'track': track_name, 'artist': artist_name, 'lyrics': response.message.body.lyrics.lyrics_body};
         lyrics.push(temp_obj);
       }
@@ -294,7 +289,6 @@ function add_song_titles_to_menu(){
 function add_song_to_dom(){
   var lyrics_button = $('.dropdown-menu').find('li');
   lyrics_button.on('click', function(e){
-    console.log($(this).index());
     var lyrics_index = $(this).index();
     $('.lyrics_display').text(lyrics[lyrics_index].lyrics);
   });
