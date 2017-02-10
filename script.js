@@ -91,13 +91,22 @@ function get_scraped_data(response) {
   }, []);
 
   var matches_track = response.match(/track\-row\-info \"([\w\W]+?)</g);
-  console.log(matches_track);
+  var matches_row = response.match(/track\-row\-number\"\>(.+?)<\//g);
+
+  matches_row = matches_row.reduce(function(firstItem, secondItem) {
+    firstItem.push(secondItem.replace(/[\w\W]*>(\d+)<\//, "$1"));
+    return firstItem;
+  }, []);
 
   for (let i = 0; i < matches.length; i++) {
     matches[i].song = matches_track[i].replace(/track\-row\-info \">\W+(.+?)\W+</, "$1");
+    matches[i].index = matches_row[i];
   }
-  get_all_lyrics(matches);
+
+
   console.log(matches);
+
+  get_all_lyrics(matches);
 }
 
 
